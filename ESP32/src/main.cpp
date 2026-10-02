@@ -5,7 +5,6 @@
 void setup() {
     pinMode(Settings::LED_OUT, OUTPUT);// Налаштовуємо пін як вихід (OUTPUT), щоб контролер міг подавати на нього напругу
     Serial.begin(115200); // Ініціалізуємо серійний порт для виводу інформації
-    //Serial.println("Програма запущена. Світлdіод буде блимати.");
 
     pinMode(Policeman::LED_RED_OUT, OUTPUT);
     pinMode(Policeman::LED_BLUE_OUT, OUTPUT);
@@ -15,17 +14,27 @@ void setup() {
   }
 
 void blink() {
-  neopixelWrite(RGB_BUILTIN, 15, 7, 8); // Червоний  
-  //digitalWrite(Settings::LED_OUT, HIGH); // Вмикаємо світлodіod (подаємо 3.3 В)
-    Serial.println("Світлdіод увімкнено."); // Виводимо повідомлення в серійний порт
-    Serial.println("LED_DELAY_MS1 = " + String(Settings::LED_DELAY_MS1)); // Виводимо повідомлення в серійний порт
-    Serial.println("LED_DELAY_MS2 = " + String(Settings::LED_DELAY_MS2)); // Виводимо повідомлення в серійний порт
+  Serial.println("Програму блінк запущено контролються піном номер: " + String(Settings::LED_OUT)); // Виводимо повідомлення в серійний порт
+  if (Settings::LED_OUT == 48) {
+      neopixelWrite(Settings::LED_OUT, 15, 7, 8); // Червоний
+      Serial.println("RGB світлdіod увімкнено."); // Виводимо повідомлення в серійний порт
+
+  }
+  else if(Settings::LED_OUT == 47) {
+      digitalWrite(Settings::LED_OUT, HIGH); // Вмикаємо світлodіod (подаємо 3.3 В)
+      Serial.println("Світлdіod увімкнено."); // Виводимо повідомлення в серійний порт
+  }
     
     delay(Settings::LED_DELAY_MS2);                 // Чекаємо 
     
-    neopixelWrite(RGB_BUILTIN, 0, 0, 0); // Червоний
-    //digitalWrite(Settings::LED_OUT, LOW);  // Вимикаємо світлodіод (подаємо 0 В)
-    Serial.println("Світлdіод вимкнено."); // Виводимо повідомлення в серійний порт
+    if (Settings::LED_OUT == 48) {
+        neopixelWrite(Settings::LED_OUT, 0, 0, 0); // Червоний
+        Serial.println("RGB світлdіod вимкнено."); // Виводимо повідомлення в серійний порт
+    }
+    else if(Settings::LED_OUT == 47) {
+        digitalWrite(Settings::LED_OUT, LOW); // Вимикаємо світлodіod (подаємо 0 В)
+        Serial.println("Світлdіod вимкнено."); // Виводимо повідомлення в серійний порт
+    }
     delay(Settings::LED_DELAY_MS);       // Чекаємо
 }
 
@@ -52,7 +61,7 @@ void police1gpio(){
 }
 
 void loop() {
-    //blink();
+    blink();
     //police2gpio();
-    police1gpio();
+    //police1gpio();
 }
